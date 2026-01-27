@@ -1,0 +1,13 @@
+<h2 mat-dialog-title class="title">{{ confirmDialogData.title }}</h2>
+<mat-dialog-content>
+    <p>{{confirmDialogData.message}}</p>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button matButton="tonal" shadow-none (click)="cancel()">{{ confirmDialogData.cancelButtonText }}</button>
+    @if (confirmDialogData.isCancelConfirmation) {
+        <button matButton="filled" color="warn" shadow-none (click)="confirm()">{{ confirmDialogData.confirmButtonText }}</button>
+    } @else {
+        <button matButton="filled" shadow-none (click)="confirm()">{{ confirmDialogData.confirmButtonText }}</button>
+    }
+
+</mat-dialog-actions>

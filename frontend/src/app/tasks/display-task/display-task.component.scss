@@ -1,0 +1,20 @@
+.display-task-page {
+    display: flex;
+    height: 100%;
+    width:100%;
+    flex-direction: column;
+
+    .content {
+        display: flex;
+        height: 100%;
+        width:100%;
+        justify-content: center;
+        align-items: center;
+
+        .card-wrapper {
+            max-width: 80%;
+            min-width: min-content;
+        }
+    }
+
+}

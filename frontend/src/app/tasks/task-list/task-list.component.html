@@ -1,0 +1,52 @@
+<div class="container">
+    <mat-toolbar class="toolbar">
+        <span>HMCTS Task List</span>
+        <span class="spacer"></span>
+        <button matIconButton (click)="openCreateTaskDialog()" matTooltip="Add task">
+            <mat-icon>add</mat-icon>
+        </button>
+    </mat-toolbar>
+    @if(tasks().length > 0) {
+        <mat-list class="task-list">
+            <mat-divider></mat-divider>
+            @for (task of tasks(); track task.id) {
+                <mat-list-item>
+                    <mat-icon matListItemIcon
+                              [routerLink]="['/tasks', task.id]"
+                              [dueAtColour]="task.dueAt"
+                              [isIcon]="true"
+                              [status]="task.status"
+                    matTooltip="{{task.status | displayStringEnumValues}}">
+                        {{task.status | statusToIcon}}
+                    </mat-icon>
+                    <span matListItemTitle [routerLink]="['/tasks', task.id]">{{task.title}}</span>
+                    <span matListItemLine [routerLink]="['/tasks', task.id]">{{task.description}}</span>
+                    <span [routerLink]="['/tasks', task.id]"
+                          [dueAtColour]="task.dueAt"
+                          [status]="task.status"
+                          [isIcon]="false">
+                    {{task.dueAt | date: 'EEEE, d MMMM, y, h:mm a'}}
+                    </span>
+                    <span matListItemMeta>
+                    <mat-form-field class="status-select">
+                        <mat-label>Status</mat-label>
+                        <mat-select value="{{task.status}}">
+                            @for (status of statusArrayOptionalOverdue(task.status); track status) {
+                                <mat-option value="{{status}}" (click)="updateTaskStatus(task.id, status)">
+                                    {{status| displayStringEnumValues}}
+                                </mat-option>
+                            }
+                        </mat-select>
+                    </mat-form-field>
+                    <button matIconButton (click)="openConfirmationDialog(task)" matTooltip="Delete task">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </span>
+                </mat-list-item>
+                <mat-divider></mat-divider>
+            }
+        </mat-list>
+    } @else {
+        <p><i>Please add a new task</i></p>
+    }
+</div>

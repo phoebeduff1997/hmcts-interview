@@ -1,0 +1,36 @@
+<div class="display-task-page">
+    <div class="routing">
+        <button matButton class="back-button" (click)="returnToTasks()">Return to tasks</button>
+    </div>
+    <div class="content">
+        <div class="card-wrapper">
+            <mat-card appearance="outlined">
+                <mat-card-header>
+                    <div mat-card-avatar>
+                        <mat-icon matListItemIcon
+                                  [dueAtColour]="task().dueAt"
+                                  [isIcon]="true"
+                                  [status]="task().status"
+                                  matTooltip="{{task().status | displayStringEnumValues}}">
+                            {{task().status | statusToIcon}}
+                        </mat-icon>
+                    </div>
+                    <mat-card-title>{{ task().title }}</mat-card-title>
+                    <mat-card-subtitle [dueAtColour]="task().dueAt"
+                                       [status]="task().status"
+                                       [isIcon]="false">Due: {{task().dueAt | date: 'EEEE, d MMMM, y, h:mm a'}}</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>{{task().description}}</p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <mat-card-subtitle [dueAtColour]="task().dueAt"
+                                       [isIcon]="true"
+                                       [status]="task().status">
+                        Status: {{task().status | displayStringEnumValues}}
+                    </mat-card-subtitle>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</div>

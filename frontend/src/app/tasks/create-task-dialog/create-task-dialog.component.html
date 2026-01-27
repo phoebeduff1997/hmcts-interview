@@ -1,0 +1,50 @@
+<mat-dialog-actions class="form-header">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="null" matTooltip="Close">
+        <mat-icon color="warn">close</mat-icon>
+    </button>
+    <h2 mat-dialog-title class="title">Create New Task</h2>
+</mat-dialog-actions>
+<mat-dialog-content>
+    <form [formGroup]="newTaskForm">
+        <mat-form-field class="full-width-input">
+            <mat-label>Title</mat-label>
+            <input matInput formControlName="title">
+            @if (newTaskForm.controls['title'].errors) {
+                <mat-error>Task must have title</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+            <mat-label>Description</mat-label>
+            <textarea matInput formControlName="description"></textarea>
+        </mat-form-field>
+        <mat-form-field class="full-width-input">
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status">
+                @for (status of statusArray(); track status){
+                    <mat-option value="{{status}}">{{status| displayStringEnumValues}}</mat-option>
+                }
+            </mat-select>
+            @if (newTaskForm.controls['status'].errors) {
+                <mat-error>Task must have a status</mat-error>
+            }
+        </mat-form-field>
+        <mat-form-field class="half-width-input">
+            <mat-label>Due date</mat-label>
+            <input matInput [matDatepicker]="datepicker" formControlName="dueAt">
+            <mat-datepicker #datepicker/>
+            <mat-datepicker-toggle [for]="datepicker" matSuffix/>
+        </mat-form-field>
+
+        <mat-form-field class="half-width-input">
+            <mat-label>Due time</mat-label>
+            <input matInput
+                   [matTimepicker]="timepicker"
+                   formControlName="dueAt">
+            <mat-timepicker #timepicker/>
+            <mat-timepicker-toggle [for]="timepicker" matSuffix/>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button matButton="filled" shadow-none [disabled]="!newTaskForm.valid" (click)="saveTask()">Save</button>
+</mat-dialog-actions>

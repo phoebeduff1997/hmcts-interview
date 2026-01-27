@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+
+    .toolbar {
+        @include mat.toolbar-overrides((
+            container-background-color: var(--mat-sys-inverse-primary)
+        ));
+
+        .spacer {
+            flex: 1 1 auto;
+        }
+    }
+
+    .task-list {
+        flex: 1;
+        overflow: auto;
+
+        mat-list-item:hover {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .status-select {
+            margin-top: 16px;
+        }
+    }
+}
+
+
+

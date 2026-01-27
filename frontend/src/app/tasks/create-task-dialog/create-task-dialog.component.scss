@@ -1,0 +1,23 @@
+.form-header {
+    position: relative;
+
+    .close-button {
+        position: absolute;
+        right:10px;
+    }
+
+    .title {
+        position: absolute;
+        left:10px;
+    }
+}
+
+.full-width-input {
+    width: 100%;
+}
+
+.half-width-input {
+    margin-right: 4px;
+    margin-left: 4px;
+    width: calc(50% - 8px);
+}

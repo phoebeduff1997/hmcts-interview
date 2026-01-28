@@ -1,13 +1,12 @@
 package org.interview.hmcts.controllers;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.interview.hmcts.entities.Task;
 import org.interview.hmcts.entities.dtos.TaskDTO;
 import org.interview.hmcts.entities.dtos.UpdateStatusDTO;
 import org.interview.hmcts.schedulers.OverdueTaskScheduler;
 import org.interview.hmcts.services.TaskService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +41,7 @@ public class TaskController
 	}
 
 	@PostMapping(Urls.Task.Post.CREATE_TASK)
-	public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO)
+	public ResponseEntity<TaskDTO> createTask(@Valid @RequestBody TaskDTO taskDTO)
 	{
 		TaskDTO createdTaskDTO = taskService.createTask(taskDTO);
 		return ResponseEntity
@@ -52,7 +51,7 @@ public class TaskController
 	}
 
 	@PatchMapping(Urls.Task.Patch.UPDATE_STATUS)
-	public ResponseEntity<TaskDTO> updateTaskStatus(@RequestBody UpdateStatusDTO updateStatusDTO)
+	public ResponseEntity<TaskDTO> updateTaskStatus(@Valid @RequestBody UpdateStatusDTO updateStatusDTO)
 	{
 		return ResponseEntity.ok(taskService.updateTaskStatus(updateStatusDTO));
 	}

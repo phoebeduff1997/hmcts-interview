@@ -44,12 +44,12 @@ class TaskControllerTest
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	@Test
-	void shouldReturnAllTasksWhenTasksExist() throws Exception
+	void getTasks_shouldReturnAllTasksWhenTasksExist() throws Exception
 	{
 		List<TaskDTO> taskDTOs = Arrays.asList(task1DTO, task2DTO);
 		when(taskService.getAllTasks()).thenReturn(taskDTOs);
 
-		ResultActions result = mockMvc.perform(get("/api/task")
+		ResultActions result = mockMvc.perform(get(Urls.Task.Get.GET_ALL_TASKS)
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -60,11 +60,11 @@ class TaskControllerTest
 	}
 
 	@Test
-	void shouldReturnEmptyListWhenNoTasks() throws Exception
+	void getTasks_shouldReturnEmptyListWhenNoTasks() throws Exception
 	{
 		when(taskService.getAllTasks()).thenReturn(Collections.emptyList());
 
-		mockMvc.perform(get("/api/task")
+		mockMvc.perform(get(Urls.Task.Get.GET_ALL_TASKS)
 					.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -74,11 +74,11 @@ class TaskControllerTest
 	}
 
 	@Test
-	void shouldReturnTaskByIdWhenTaskExists() throws Exception
+	void getTask_shouldReturnTaskByIdWhenTaskExists() throws Exception
 	{
 		when(taskService.getTask(task1DTO.getId())).thenReturn(task1DTO);
 
-		ResultActions result = mockMvc.perform(get("/api/task/{id}", task1DTO.getId())
+		ResultActions result = mockMvc.perform(get(Urls.Task.Get.GET_TASK, task1DTO.getId())
 					.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON));
@@ -88,7 +88,7 @@ class TaskControllerTest
 	}
 
 	@Test
-	void shouldReturnStreamOfRecentlyOverdueTasks() throws Exception
+	void streamRecentlyOverdueTasks_shouldReturnStreamOfRecentlyOverdueTasks() throws Exception
 	{
 		Sinks.Many<List<TaskDTO>> sink = Sinks.many().replay().all();
 		when(overdueTaskScheduler.getTaskUpdateSink()).thenReturn(sink);
@@ -97,7 +97,7 @@ class TaskControllerTest
 
 		sink.tryEmitNext(taskDTOS);
 
-		mockMvc.perform(get("/api/task/overdue")
+		mockMvc.perform(get(Urls.Task.Get.GET_ALL_RECENTLY_OVERDUE_TASKS)
 						.accept(MediaType.TEXT_EVENT_STREAM))
 				.andExpect(status().isOk())
 				.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_EVENT_STREAM))
@@ -113,13 +113,13 @@ class TaskControllerTest
 	}
 
 	@Test
-	void shouldReturnTaskWhenCreated() throws Exception
+	void createTask_shouldReturnTaskWhenCreated() throws Exception
 	{
 		String json = toJson(task1DTO);
 
 		when(taskService.createTask(task1DTO)).thenReturn(task1DTO);
 
-		ResultActions result = mockMvc.perform(post("/api/task")
+		ResultActions result = mockMvc.perform(post(Urls.Task.Post.CREATE_TASK)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(json)
 						.accept(MediaType.APPLICATION_JSON))
@@ -131,14 +131,14 @@ class TaskControllerTest
 	}
 
 	@Test
-	void shouldReturnTaskWhenStatusUpdated() throws Exception
+	void updateTaskStatus_shouldReturnTaskWhenStatusUpdated() throws Exception
 	{
 		UpdateStatusDTO updateStatusDTO = new UpdateStatusDTO(task1DTO.getId(), Status.COMPLETE);
 		String json = toJson(updateStatusDTO);
 
 		when(taskService.updateTaskStatus(updateStatusDTO)).thenReturn(task1DTO);
 
-		ResultActions result = mockMvc.perform(patch("/api/task/status")
+		ResultActions result = mockMvc.perform(patch(Urls.Task.Patch.UPDATE_STATUS)
 						.contentType(MediaType.APPLICATION_JSON)
 						.content(json)
 						.accept(MediaType.APPLICATION_JSON))
@@ -150,9 +150,9 @@ class TaskControllerTest
 	}
 
 	@Test
-	void shouldReturnNoContentWhenTaskDeleted() throws Exception
+	void deleteTask_shouldReturnNoContentWhenTaskDeleted() throws Exception
 	{
-		mockMvc.perform(delete("/api/task/{id}", task1DTO.getId())
+		mockMvc.perform(delete(Urls.Task.Delete.DELETE_TASK, task1DTO.getId())
 						.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isNoContent());
 

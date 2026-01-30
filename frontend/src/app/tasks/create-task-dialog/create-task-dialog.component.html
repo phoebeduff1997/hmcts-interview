@@ -46,5 +46,8 @@
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>
+    @if(displayError) {
+        <p class="error-message">Something went wrong, please close the dialog and try again</p>
+    }
     <button matButton="filled" shadow-none [disabled]="!newTaskForm.valid" (click)="saveTask()">Save</button>
 </mat-dialog-actions>

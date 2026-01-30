@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject} from '@angular/core';
+import {ChangeDetectorRef, Component, DestroyRef, inject} from '@angular/core';
 import {
     MatDialogActions,
     MatDialogClose,
@@ -21,6 +21,7 @@ import {Task} from '../models/task.model';
 import {TaskService} from '../services/task.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {MatTooltip} from '@angular/material/tooltip';
+import {NotificationService} from '../../shared/services/notification.service';
 
 @Component({
     selector: 'app-create-task-dialog',
@@ -60,19 +61,26 @@ import {MatTooltip} from '@angular/material/tooltip';
 export class CreateTaskDialogComponent {
 
     newTaskForm = this.createFormGroup();
+    displayError: boolean = false;
     protected readonly statusArray = statusArray;
 
     private destroyRef = inject(DestroyRef);
+    private changeDetectorRef = inject(ChangeDetectorRef);
 
-    constructor(private dialogRef: MatDialogRef<CreateTaskDialogComponent>, private taskService: TaskService) {}
+    constructor(private dialogRef: MatDialogRef<CreateTaskDialogComponent>, private taskService: TaskService,
+                private notificationService: NotificationService) {}
 
     public saveTask(): void {
         this.taskService.createTask(this.createTask(this.newTaskForm.value))
             .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
             next: value => {
+                this.notificationService.showSuccessNotification('Task created');
                 this.dialogRef.close(value);
+            },
+            error: err => {
+                this.displayError = true;
+                this.changeDetectorRef.detectChanges();
             }
-            //TODO: handle error
         })
     }
 

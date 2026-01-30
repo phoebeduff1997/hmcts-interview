@@ -1,10 +1,14 @@
 A list of trade offs made while building this application
 
+## Database
+    For ease of local set up I have opted to use a local in memory database. This would usually be better served for
+    integration tests, but to simulate a "live" environment the database is prepopulated with data on load
+
 ## Overdue scheduler
-    I have set up a default async task executor to handle the SSE implemented to return the updated overdue tasks.
-    This has been set up with some small numbers as this is a demo only. If this was in production I would change out
-    the spring MVC dependency for webflux, as MVC is a blocking thread and webflux isnt. I didnt want to engage in
-    premature optimisation in a demo app
+    I have set up a default async task executor to handle the Server Sent Event (SSE) implemented to return the updated
+    overdue tasks. This has been set up with some small numbers as this is a demo only. If this was in production I
+    would change out the spring MVC dependency for webflux, as MVC is a blocking thread and webflux isnt. I didnt want
+    to engage in premature optimisation in a demo app
 
 ## Logging
     The spec document didnt ask for logging so for brevity I havent added any dedicated loggers. If this was local/small

@@ -36,3 +36,20 @@ body {
 }
 
 /* You can add global styles to this file, and also import other style files */
+:root {
+    @include mat.snack-bar-overrides((
+        button-color: white
+    ));
+}
+
+.error-snackbar {
+    @include mat.snack-bar-overrides((
+        container-color: red
+    ));
+}
+
+.success-snackbar {
+    @include mat.snack-bar-overrides((
+        container-color: limegreen
+    ));
+}

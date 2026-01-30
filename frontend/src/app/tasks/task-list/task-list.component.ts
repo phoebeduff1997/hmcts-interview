@@ -20,7 +20,7 @@ import {StatusToIconPipe} from '../pipes/status-to-icon.pipe';
 import {DueAtColourDirective} from '../directives/due-at-colour.directive';
 import {MatDialog} from '@angular/material/dialog';
 import {CreateTaskDialogComponent} from '../create-task-dialog/create-task-dialog.component';
-import {ConfirmDialogComponent} from '../../shared/confirm-dialog.component';
+import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
 import {Status, statusArrayOptionalOverdue} from '../models/enums/status.model';
 import {MatOption} from '@angular/material/core';
 import {MatFormField, MatLabel, MatSelect} from '@angular/material/select';

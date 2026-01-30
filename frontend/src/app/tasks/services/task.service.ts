@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Task} from '../models/task.model';
 import {HmctsModelApi} from '../../hmcts-model.api';
@@ -43,7 +43,6 @@ export class TaskService {
             };
 
             eventSource.onerror = error => {
-                //TODO better error handing
                 console.log('SSE error', error);
                 eventSource.close();
                 subscriber.complete();

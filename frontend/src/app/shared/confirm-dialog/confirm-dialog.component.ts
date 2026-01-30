@@ -7,7 +7,7 @@ import {
     MatDialogTitle
 } from '@angular/material/dialog';
 import {MatButton} from '@angular/material/button';
-import {ConfirmDialogData} from './models/confirm-dialog-data.model';
+import {ConfirmDialogData} from '../models/confirm-dialog-data.model';
 
 @Component({
     selector: 'app-confirm-dialog',

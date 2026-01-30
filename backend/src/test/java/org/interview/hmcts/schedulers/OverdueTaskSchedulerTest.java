@@ -14,10 +14,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.interview.hmcts.utils.test.CreateEntityUtils.createTask;
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class OverdueTaskSchedulerTest {
@@ -71,6 +69,18 @@ class OverdueTaskSchedulerTest {
 
 		verify(taskRepository).updateAndReturnOverdueTasks();
 		assertThat(updatedOverdueTasks).isEmpty();
+	}
+
+	@Test
+	void shutdown_shouldTryToComplete()
+	{
+		OverdueTaskScheduler scheduler = new OverdueTaskScheduler(mock(TaskRepository.class));
+
+		scheduler.shutdown();
+
+		assertDoesNotThrow(
+			() -> scheduler.getTaskUpdateSink().asFlux().blockLast()
+		);
 	}
 
 	private void assertTaskValues(Task expectedTask, TaskDTO actualTask)

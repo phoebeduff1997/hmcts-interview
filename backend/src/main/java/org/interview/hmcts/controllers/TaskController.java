@@ -1,7 +1,6 @@
 package org.interview.hmcts.controllers;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import org.interview.hmcts.entities.dtos.TaskDTO;
 import org.interview.hmcts.entities.dtos.UpdateStatusDTO;

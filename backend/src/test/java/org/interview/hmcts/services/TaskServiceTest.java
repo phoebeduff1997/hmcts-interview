@@ -6,7 +6,6 @@ import org.interview.hmcts.entities.dtos.TaskDTO;
 import org.interview.hmcts.entities.dtos.UpdateStatusDTO;
 import org.interview.hmcts.entities.enums.Status;
 import org.interview.hmcts.repositories.TaskRepository;
-import org.interview.hmcts.utils.test.CreateEntityUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

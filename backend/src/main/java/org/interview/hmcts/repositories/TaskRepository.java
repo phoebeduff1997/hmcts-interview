@@ -4,7 +4,6 @@ import jakarta.transaction.Transactional;
 import org.interview.hmcts.entities.Task;
 import org.interview.hmcts.entities.enums.Status;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 

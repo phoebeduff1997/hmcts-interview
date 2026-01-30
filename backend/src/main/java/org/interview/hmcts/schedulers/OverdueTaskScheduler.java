@@ -2,8 +2,6 @@ package org.interview.hmcts.schedulers;
 
 import jakarta.annotation.PreDestroy;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.interview.hmcts.entities.Task;
 import org.interview.hmcts.entities.converters.TaskDTOConverter;
 import org.interview.hmcts.entities.dtos.TaskDTO;
 import org.interview.hmcts.repositories.TaskRepository;
@@ -40,7 +38,8 @@ public class OverdueTaskScheduler
 	}
 
 	@PreDestroy
-	public void shutdown() {
+	public void shutdown()
+	{
 		taskUpdateSink.tryEmitComplete();
 	}
 }

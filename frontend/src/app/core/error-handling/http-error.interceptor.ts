@@ -41,8 +41,8 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     }
 
     private get400ErrorMessage(errors: HttpErrorResponse[]): string {
-        let errorMessages = '';
-        errors.forEach(error => errorMessages = errorMessages + error.message + ', ');
-        return errorMessages;
+        let errorMessages: string[] = [];
+        errors.forEach(error => errorMessages.push(error.message));
+        return errorMessages.join(', ');
     }
 }

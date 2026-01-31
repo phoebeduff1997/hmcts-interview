@@ -7,9 +7,9 @@ import {Task} from '../models/task.model';
 import {Status} from '../models/enums/status.model';
 import {provideRouter} from '@angular/router';
 import {MatDialog} from '@angular/material/dialog';
-import {ConfirmDialogComponent} from '../../shared/confirm-dialog.component';
 import {CreateTaskDialogComponent} from '../create-task-dialog/create-task-dialog.component';
 import {UpdateTaskStatus} from '../models/update-task-status.model';
+import {ConfirmDialogComponent} from '../../shared/confirm-dialog/confirm-dialog.component';
 
 describe('TaskList', () => {
     const taskData: Task[] = [createTask(33)];

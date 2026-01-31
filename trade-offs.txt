@@ -19,4 +19,4 @@ A list of trade offs made while building this application
 ## Pagination
     If the application was expected to handle a large number of tasks, the get requests would be paged, and the
     frontend would implement pagination to allow the user to go through all the tasks, while reducing the size of the
-    requests and the load time on the frontend 
+    requests and the load time on the frontend

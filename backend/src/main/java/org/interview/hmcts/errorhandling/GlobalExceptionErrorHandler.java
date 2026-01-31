@@ -1,5 +1,6 @@
 package org.interview.hmcts.errorhandling;
 
+import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,22 @@ public class GlobalExceptionErrorHandler
 				})
 				.toList());
 		return ResponseEntity.badRequest().body(errors);
+	}
+
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<Map<String, Object>> handleMissingEntityError(EntityNotFoundException ex)
+	{
+		Map<String, Object> error = new LinkedHashMap<>();
+		error.put("timestamp", Instant.now());
+		error.put("status", HttpStatus.NOT_FOUND.value());
+		error.put("error", "Resource not found");
+		error.put("message", ex.getMessage());
+
+		log.warn(ex.getMessage());
+
+		return ResponseEntity
+				.status(HttpStatus.NOT_FOUND)
+				.body(error);
 	}
 
 	@ExceptionHandler(Exception.class)

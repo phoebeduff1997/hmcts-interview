@@ -2,6 +2,7 @@ package org.interview.hmcts.schedulers;
 
 import jakarta.annotation.PreDestroy;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.interview.hmcts.entities.converters.TaskDTOConverter;
 import org.interview.hmcts.entities.dtos.TaskDTO;
 import org.interview.hmcts.repositories.TaskRepository;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Component
+@Slf4j
 public class OverdueTaskScheduler
 {
 	private final TaskRepository taskRepository;
@@ -33,7 +35,7 @@ public class OverdueTaskScheduler
 		if(!updatedOverdueTasks.isEmpty())
 		{
 			taskUpdateSink.tryEmitNext(updatedOverdueTasks);
-			System.out.println("Updated: " + updatedOverdueTasks.size());
+			log.info("Overdue Scheduler: updated " + updatedOverdueTasks.size() + " record");
 		}
 	}
 
@@ -41,5 +43,6 @@ public class OverdueTaskScheduler
 	public void shutdown()
 	{
 		taskUpdateSink.tryEmitComplete();
+		log.info("Updated scheduler shut down");
 	}
 }

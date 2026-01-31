@@ -19,7 +19,7 @@ class GlobalExceptionErrorHandlerTest
 	private final GlobalExceptionErrorHandler exceptionHandler = new GlobalExceptionErrorHandler();
 
 	@Test
-	void handleValidationError_shouldReturnCorrectResponse() throws NoSuchMethodException
+	void handleValidationError_shouldReturnCorrectResponse()
 	{
 		Object dummyObject = new Object();
 

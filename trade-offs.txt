@@ -11,8 +11,12 @@ A list of trade offs made while building this application
     to engage in premature optimisation in a demo app
 
 ## Logging
-    The spec document didnt ask for logging so for brevity I havent added any dedicated loggers. If this was local/small
-    scale production code (e.g. a desktop app or a small internal tool) I would add a backend logger to log the backend
-    errors, and I would configure the frontend error handler to send the logs to the backend and log for agregated error
-    logging. If this was a live instance with many users, I would consider other tools like Sentry/Datadog/Elastic
-    depending on requirements
+    The spec document didnt ask for logging so I have only explicity logged the backend. If this was local/small
+    scale production code (e.g. a desktop app or a small internal tool) I would configure the frontend error handler
+    to send the logs to the backend and log for agregated error logging. If this was a live instance with many users,
+    I would consider other tools like Sentry/Datadog/Elastic depending on requirements
+
+## Pagination
+    If the application was expected to handle a large number of tasks, the get requests would be paged, and the
+    frontend would implement pagination to allow the user to go through all the tasks, while reducing the size of the
+    requests and the load time on the frontend 

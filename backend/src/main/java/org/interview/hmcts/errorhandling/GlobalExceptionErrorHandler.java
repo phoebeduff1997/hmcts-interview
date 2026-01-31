@@ -1,5 +1,6 @@
 package org.interview.hmcts.errorhandling;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +12,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @RestControllerAdvice
+@Slf4j
 public class GlobalExceptionErrorHandler
 {
 
@@ -22,7 +24,10 @@ public class GlobalExceptionErrorHandler
 		errors.put("status", HttpStatus.BAD_REQUEST.value());
 		errors.put("errors", ex.getBindingResult().getFieldErrors()
 				.stream()
-				.map(err -> Map.of("field", err.getField(), "message", err.getDefaultMessage()))
+				.map(err -> {
+					log.warn(err.getField() + ": " + err.getDefaultMessage());
+					return Map.of("field", err.getField(), "message", err.getDefaultMessage());
+				})
 				.toList());
 		return ResponseEntity.badRequest().body(errors);
 	}
@@ -35,6 +40,8 @@ public class GlobalExceptionErrorHandler
 		error.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
 		error.put("error", "Internal Server Error");
 		error.put("message", ex.getMessage());
+
+		log.warn(ex.getMessage());
 
 		return ResponseEntity
 				.status(HttpStatus.INTERNAL_SERVER_ERROR)

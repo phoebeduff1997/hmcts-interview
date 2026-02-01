@@ -126,13 +126,16 @@ export class TaskListComponent implements OnInit {
     }
 
     updateTaskStatus(id: number, status: string) {
-        this.taskService.updateTaskStatus(this.createUpdateTaskStatus(id, status as Status))
-            .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
+        const selectedTask = this.tasks().find(task => task.id === id);
+        if(selectedTask?.status  != status) {
+            this.taskService.updateTaskStatus(this.createUpdateTaskStatus(id, status as Status))
+                .pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
                 next: value => {
                     const updatedTaskList: Task[] = this.tasks().map(task => task.id === value.id ? value : task);
                     this.tasks.update(existingTasks => updatedTaskList);
                 }
-        });
+            });
+        }
     }
 
     private createUpdateTaskStatus(id: number, status: Status): UpdateTaskStatus {

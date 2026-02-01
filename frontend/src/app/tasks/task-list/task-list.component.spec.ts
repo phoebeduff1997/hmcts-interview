@@ -148,21 +148,27 @@ describe('TaskList', () => {
 
     describe('updateTaskStatus', () => {
         it('should update the task with the returned value', () => {
-            setUpupdateTaskStatusTests()
+            setUpUpdateTaskStatusTests()
 
             expect(mockTaskService.updateTaskStatus).toHaveBeenCalledWith({id: 1, status: Status.COMPLETE} as UpdateTaskStatus);
             expect(component.tasks().length).toBe(2);
             expect(component.tasks()[1].status).toBe(Status.COMPLETE);
         });
 
+        it('should not update the task when selected status is same as current status', () => {
+            component.updateTaskStatus(33, Status.NOT_STARTED);
+
+            expect(mockTaskService.updateTaskStatus).not.toHaveBeenCalled();
+        })
+
         it('should not affect other tasks', () => {
-            setUpupdateTaskStatusTests();
+            setUpUpdateTaskStatusTests();
 
             expect(component.tasks().length).toBe(2);
             expect(component.tasks()[0].status).toBe(Status.NOT_STARTED);
         });
 
-        function setUpupdateTaskStatusTests(): void {
+        function setUpUpdateTaskStatusTests(): void {
             component.tasks.update(existingTasks => [...existingTasks, createTask(1)])
             expect(component.tasks().length).toEqual(2);
 

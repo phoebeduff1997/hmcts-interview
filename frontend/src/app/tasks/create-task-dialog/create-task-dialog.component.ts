@@ -8,7 +8,15 @@ import {
 } from '@angular/material/dialog';
 import {MatIcon} from '@angular/material/icon';
 import {MatButton, MatIconButton} from '@angular/material/button';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {
+    AbstractControl,
+    FormControl,
+    FormGroup,
+    FormsModule,
+    ReactiveFormsModule,
+    ValidationErrors,
+    Validators
+} from '@angular/forms';
 import {MatError, MatFormField, MatInput, MatLabel, MatSuffix} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
 import {DisplayStringEnumValuesPipe} from '../pipes/display-string-enum-values.pipe';
@@ -68,7 +76,7 @@ export class CreateTaskDialogComponent {
     private changeDetectorRef = inject(ChangeDetectorRef);
 
     constructor(private dialogRef: MatDialogRef<CreateTaskDialogComponent>, private taskService: TaskService,
-                private notificationService: NotificationService) {}
+                private notificationService: NotificationService) { }
 
     public saveTask(): void {
         this.taskService.createTask(this.createTask(this.newTaskForm.value))
@@ -89,18 +97,46 @@ export class CreateTaskDialogComponent {
             title: values.title,
             description: values.description,
             status: values.status,
-            dueAt: values.dueAt
+            dueAt: this.createDate(values.dueAtDate, values.dueAtTime)
         } as Task;
     }
 
+    private createDate(date: Date, time: Date): Date {
+        let dateTime: Date = new Date(date.toDateString() + ' ' + time.toTimeString());
+        return dateTime;
+    }
+
     private createFormGroup(): FormGroup {
-        return new FormGroup({
+        const formGroup = new FormGroup({
             title: new FormControl<string>('', [Validators.required]),
             description: new FormControl<string | null>(''),
             status: new FormControl<Status>(Status.NOT_STARTED, [Validators.required]),
-            dueAt: new FormControl<Date>(new Date(), [Validators.required])
+            dueAtDate: new FormControl<Date>(new Date(), [Validators.required]),
+            dueAtTime: new FormControl<Date>(new Date(), [Validators.required])
         });
+
+        formGroup.controls['dueAtDate'].valueChanges.subscribe(value => {
+            const errors = this.validateDate(value);
+            formGroup.controls['dueAtDate'].setErrors(errors);
+        });
+
+        return formGroup;
     }
 
+    private validateDate(value: any): ValidationErrors | null {
+        if (!(value instanceof Date) || isNaN(value.getTime())) {
+            return {
+                invalidDate: true
+            };
+        }
 
+        const year = value.getFullYear();
+        if (year < 1900 || year > 3000) {
+            return {
+                outOfRange: true
+            };
+        }
+
+        return null;
+    }
 }

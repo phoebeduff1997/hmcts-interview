@@ -30,7 +30,7 @@
         </mat-form-field>
         <mat-form-field class="half-width-input">
             <mat-label>Due date</mat-label>
-            <input matInput [matDatepicker]="datepicker" formControlName="dueAt">
+            <input matInput [matDatepicker]="datepicker" formControlName="dueAtDate">
             <mat-datepicker #datepicker/>
             <mat-datepicker-toggle [for]="datepicker" matSuffix/>
         </mat-form-field>
@@ -39,7 +39,7 @@
             <mat-label>Due time</mat-label>
             <input matInput
                    [matTimepicker]="timepicker"
-                   formControlName="dueAt">
+                   formControlName="dueAtTime">
             <mat-timepicker #timepicker/>
             <mat-timepicker-toggle [for]="timepicker" matSuffix/>
         </mat-form-field>

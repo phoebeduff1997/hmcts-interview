@@ -41,11 +41,12 @@ describe('CreateTaskDialogComponent', () => {
         it('should create correct form group on load', () => {
             const formControlIdentifiers: string[] = Object.keys(component.newTaskForm.controls);
 
-            expect(formControlIdentifiers.length).toEqual(4);
+            expect(formControlIdentifiers.length).toEqual(5);
             expect(formControlIdentifiers.indexOf('title') > -1).toBeTrue();
             expect(formControlIdentifiers.indexOf('description') > -1).toBeTrue();
             expect(formControlIdentifiers.indexOf('status') > -1).toBeTrue();
-            expect(formControlIdentifiers.indexOf('dueAt') > -1).toBeTrue();
+            expect(formControlIdentifiers.indexOf('dueAtDate') > -1).toBeTrue();
+            expect(formControlIdentifiers.indexOf('dueAtTime') > -1).toBeTrue();
         });
 
         it('should have correct validation for title', () => {
@@ -66,14 +67,20 @@ describe('CreateTaskDialogComponent', () => {
 
             component.newTaskForm.controls['status'].setValue(Status.COMPLETE);
             expect(component.newTaskForm.controls['status'].valid).toBeTrue();
+
+            component.newTaskForm.controls['status'].setValue(null);
+            expect(component.newTaskForm.controls['status'].valid).toBeFalse();
         });
 
-        it('should have correct validation for dueAt', () => {
-            expect(component.newTaskForm.controls['dueAt'].value).toBeInstanceOf(Date);
-            expect(component.newTaskForm.controls['dueAt'].valid).toBeTrue();
+        it('should have correct validation for dueAtTime', () => {
+            expect(component.newTaskForm.controls['dueAtTime'].value).toBeInstanceOf(Date);
+            expect(component.newTaskForm.controls['dueAtTime'].valid).toBeTrue();
 
-            component.newTaskForm.controls['dueAt'].setValue(new Date());
-            expect(component.newTaskForm.controls['dueAt'].valid).toBeTrue();
+            component.newTaskForm.controls['dueAtTime'].setValue(new Date());
+            expect(component.newTaskForm.controls['dueAtTime'].valid).toBeTrue();
+
+            component.newTaskForm.controls['dueAtTime'].setValue(null);
+            expect(component.newTaskForm.controls['dueAtTime'].valid).toBeFalse();
         });
 
         it('should have invalid form if field invalid', () => {
@@ -84,19 +91,63 @@ describe('CreateTaskDialogComponent', () => {
             component.newTaskForm.controls['title'].setValue('test title value');
             expect(component.newTaskForm.valid).toBeTrue();
         });
+
+        describe('validateDate', () => {
+            it('should validate dueAtDate as true when valid', () => {
+                expect(component.newTaskForm.controls['dueAtDate'].value).toBeInstanceOf(Date);
+                expect(component.newTaskForm.controls['dueAtDate'].valid).toBeTrue();
+
+                component.newTaskForm.controls['dueAtDate'].setValue(new Date());
+                expect(component.newTaskForm.controls['dueAtDate'].valid).toBeTrue();
+            });
+
+            it('should validate dueAtDate as false when null', () => {
+                component.newTaskForm.controls['dueAtDate'].setValue(null);
+                expect(component.newTaskForm.controls['dueAtDate'].valid).toBeFalse();
+            });
+
+            it('should validate dueAtDate as false when not a date', () => {
+                component.newTaskForm.controls['dueAtDate'].setValue("not a date");
+                expect(component.newTaskForm.controls['dueAtDate'].valid).toBeFalse();
+            });
+
+            it('should validate dueAtDate as false when date form not valid', () => {
+                component.newTaskForm.controls['dueAtDate'].setValue(new Date('123456789'));
+                expect(component.newTaskForm.controls['dueAtDate'].valid).toBeFalse();
+            });
+
+            it('should validate dueAtDate as false when year less than 1900', () => {
+                let date: Date = new Date();
+                date.setFullYear(1899);
+                component.newTaskForm.controls['dueAtDate'].setValue(date);
+                expect(component.newTaskForm.controls['dueAtDate'].valid).toBeFalse();
+            });
+
+            it('should validate dueAtDate as false when year more than 3000', () => {
+                let date: Date = new Date();
+                date.setFullYear(3001);
+                component.newTaskForm.controls['dueAtDate'].setValue(date);
+                expect(component.newTaskForm.controls['dueAtDate'].valid).toBeFalse();
+            });
+        });
     });
 
     describe('saveTask', () => {
         it('should save and close with the correct value', () => {
-            const currentDate = new Date();
-            setUpValidForm(currentDate);
-            const sentTask: Task = createTestTask(currentDate);
-            const recievedTask: Task = createTestTask(currentDate, 1);
+            const currentDateTime = new Date();
+            setUpValidForm(currentDateTime);
+            const sentTask: Task = createTestTask(currentDateTime);
+            const recievedTask: Task = createTestTask(currentDateTime, 1);
             mockTaskService.createTask.and.returnValue(of(recievedTask));
 
             component.saveTask();
 
-            expect(mockTaskService.createTask).toHaveBeenCalledWith(sentTask);
+            expect(mockTaskService.createTask).toHaveBeenCalledWith(jasmine.objectContaining({
+                title: sentTask.title,
+                description: sentTask.description,
+                status: sentTask.status
+            }));
+            expect(sentTask.dueAt.toISOString()).toEqual(recievedTask.dueAt.toISOString());
             expect(mockDialog.close).toHaveBeenCalledWith(recievedTask);
 
         });
@@ -105,7 +156,8 @@ describe('CreateTaskDialogComponent', () => {
             component.newTaskForm.controls['title'].setValue('test title value');
             component.newTaskForm.controls['description'].setValue('test description value');
             component.newTaskForm.controls['status'].setValue(Status.COMPLETE);
-            component.newTaskForm.controls['dueAt'].setValue(date);
+            component.newTaskForm.controls['dueAtDate'].setValue(date);
+            component.newTaskForm.controls['dueAtTime'].setValue(date);
         }
 
         function createTestTask(date: Date, id?: number): Task {

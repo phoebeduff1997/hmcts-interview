@@ -4,7 +4,8 @@ import {Task} from '../models/task.model';
 import {ActivatedRoute, Router} from '@angular/router';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {
-    MatCard, MatCardActions,
+    MatCard,
+    MatCardActions,
     MatCardAvatar,
     MatCardContent,
     MatCardHeader,

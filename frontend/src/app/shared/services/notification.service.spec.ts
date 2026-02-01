@@ -1,5 +1,5 @@
 import {NotificationService} from './notification.service';
-import {MatSnackBar, MatSnackBarConfig, MatSnackBarRef} from '@angular/material/snack-bar';
+import {MatSnackBar} from '@angular/material/snack-bar';
 import {TestBed} from '@angular/core/testing';
 import any = jasmine.any;
 

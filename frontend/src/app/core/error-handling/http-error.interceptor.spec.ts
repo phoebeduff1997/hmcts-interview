@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { HttpErrorInterceptor } from './http-error.interceptor';
-import { NotificationService } from '../../shared/services/notification.service';
-import { HttpHandler, HttpRequest, HttpErrorResponse, HttpEvent } from '@angular/common/http';
-import { of, throwError } from 'rxjs';
+import {TestBed} from '@angular/core/testing';
+import {HttpErrorInterceptor} from './http-error.interceptor';
+import {NotificationService} from '../../shared/services/notification.service';
+import {HttpErrorResponse, HttpEvent, HttpHandler, HttpRequest} from '@angular/common/http';
+import {of, throwError} from 'rxjs';
 
 describe('HttpErrorInterceptor', () => {
     let httpErrorInterceptor: HttpErrorInterceptor;

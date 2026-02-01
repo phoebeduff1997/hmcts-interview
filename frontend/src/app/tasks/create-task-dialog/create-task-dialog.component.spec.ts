@@ -49,12 +49,6 @@ describe('CreateTaskDialogComponent', () => {
             expect(formControlIdentifiers.indexOf('dueAtTime') > -1).toBeTrue();
         });
 
-        it('should have correct validation for title', () => {
-            expect(component.newTaskForm.controls['title'].valid).toBeFalse();
-            component.newTaskForm.controls['title'].setValue('test title value');
-            expect(component.newTaskForm.controls['title'].valid).toBeTrue();
-        });
-
         it('should have correct validation for description', () => {
             expect(component.newTaskForm.controls['description'].valid).toBeTrue();
             component.newTaskForm.controls['description'].setValue('test description value');
@@ -90,6 +84,26 @@ describe('CreateTaskDialogComponent', () => {
         it('should have valid form if all fields valid', () => {
             component.newTaskForm.controls['title'].setValue('test title value');
             expect(component.newTaskForm.valid).toBeTrue();
+        });
+
+        describe('ValidateTitle', () => {
+            it('should validate title as true when valid', () => {
+                expect(component.newTaskForm.controls['title'].valid).toBeFalse();
+                component.newTaskForm.controls['title'].setValue('test title value');
+                expect(component.newTaskForm.controls['title'].valid).toBeTrue();
+            });
+
+            it('should validate title as true when title has leading/trailing spaces', () => {
+                expect(component.newTaskForm.controls['title'].valid).toBeFalse();
+                component.newTaskForm.controls['title'].setValue('   title   ');
+                expect(component.newTaskForm.controls['title'].valid).toBeTrue();
+            });
+
+            it('should validate title as false when title is only empty string', () => {
+                expect(component.newTaskForm.controls['title'].valid).toBeFalse();
+                component.newTaskForm.controls['title'].setValue('      ');
+                expect(component.newTaskForm.controls['title'].valid).toBeFalse();
+            });
         });
 
         describe('validateDate', () => {
@@ -150,6 +164,19 @@ describe('CreateTaskDialogComponent', () => {
             expect(sentTask.dueAt.toISOString()).toEqual(recievedTask.dueAt.toISOString());
             expect(mockDialog.close).toHaveBeenCalledWith(recievedTask);
 
+        });
+
+        it('should remove whitespace from title when saving', () => {
+            component.newTaskForm.controls['title'].setValue('     title      ');
+            const recievedTask: Task = {title: 'title'} as Task;;
+            mockTaskService.createTask.and.returnValue(of(recievedTask));
+
+            component.saveTask();
+
+            expect(mockTaskService.createTask).toHaveBeenCalledWith(jasmine.objectContaining({
+                title: 'title'
+            }));
+            expect(mockDialog.close).toHaveBeenCalledWith(recievedTask);
         });
 
         function setUpValidForm(date: Date): void {

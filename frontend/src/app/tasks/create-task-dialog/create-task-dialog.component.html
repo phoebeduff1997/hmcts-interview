@@ -9,8 +9,11 @@
         <mat-form-field class="full-width-input">
             <mat-label>Title</mat-label>
             <input matInput formControlName="title">
-            @if (newTaskForm.controls['title'].errors) {
+            @if (newTaskForm.controls['title'].hasError('required')) {
                 <mat-error>Task must have title</mat-error>
+            }
+            @if (newTaskForm.controls['title'].hasError('maxlength')) {
+                <mat-error>Title must be less than 255 characters</mat-error>
             }
         </mat-form-field>
         <mat-form-field class="full-width-input">

@@ -57,6 +57,9 @@ class TaskControllerErrorHandlingTest
 	{
 		return Stream.of(
 				Arguments.of(new TaskDTO(1L, null, "description", Status.IN_PROGRESS, Instant.now()), "title", "Title cannot be blank"),
+				Arguments.of(new TaskDTO(1L, "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@abcdefghijklmnopqrstuvwxyzABCDEFG" +
+						"HIJKLMNOPQRSTUVWXYZ0123456789!@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOP" +
+						"QRSTUVWXYZ0123456789!@", "description", Status.IN_PROGRESS, Instant.now()), "title", "Title must be less than 255 characters"),
 				Arguments.of(new TaskDTO(1L, "title", "description", null, Instant.now()), "status", "Status cannot be null"),
 				Arguments.of(new TaskDTO(1L, "title", "description", Status.OVERDUE, Instant.now()), "status", "Status cannot be overdue"),
 				Arguments.of(new TaskDTO(1L, "title", "description", Status.IN_PROGRESS, null), "dueAt", "Due at time cannot be null")

@@ -3,6 +3,7 @@ package org.interview.hmcts.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.interview.hmcts.entities.enums.Status;
 
@@ -27,7 +28,8 @@ public class Task
 	private Long id;
 
 	@NotBlank(message = "Title cannot be null")
-	@Column(nullable = false)
+	@Size(max = 255, message = "Title must be less than 255 characters")
+	@Size(max = 255)
 	private String title;
 
 	@Column(columnDefinition = "CLOB")

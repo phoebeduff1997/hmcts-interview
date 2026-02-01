@@ -102,7 +102,7 @@ export class CreateTaskDialogComponent {
 
     private createFormGroup(): FormGroup {
         const formGroup = new FormGroup({
-            title: new FormControl<string>('', [trimmedRequired]),
+            title: new FormControl<string>('', [trimmedRequired, Validators.maxLength(255)]),
             description: new FormControl<string | null>(''),
             status: new FormControl<Status>(Status.NOT_STARTED, [Validators.required]),
             dueAtDate: new FormControl<Date>(new Date(), [Validators.required]),

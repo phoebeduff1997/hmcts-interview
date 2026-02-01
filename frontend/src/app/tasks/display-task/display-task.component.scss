@@ -1,20 +1,34 @@
 .display-task-page {
     display: flex;
-    height: 100%;
+    height: 100vh;
     width:100%;
     flex-direction: column;
 
+    .routing {
+        flex: 0 0 auto;
+    }
+
     .content {
         display: flex;
-        height: 100%;
-        width:100%;
+        flex: 1 1 auto;
         justify-content: center;
         align-items: center;
+        overflow: hidden;
 
         .card-wrapper {
             max-width: 80%;
             min-width: min-content;
+            max-height: 100%;
+
+            mat-card {
+                display: flex;
+                flex-direction: column;
+                max-height: 80vh;
+
+                mat-card-content {
+                    overflow-y: auto;
+                }
+            }
         }
     }
-
 }
